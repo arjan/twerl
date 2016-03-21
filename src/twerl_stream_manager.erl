@@ -217,7 +217,7 @@ code_change(_OldVsn, State, _Extra) ->
 %%--------------------------------------------------------------------
 %%% Internal functions
 %%--------------------------------------------------------------------
--spec client_connect(record()) -> pid().
+-spec client_connect(#state{}) -> pid().
 client_connect(State=#state{auth = Auth, params = Params, endpoint = Endpoint}) ->
     Parent = self(),
 
@@ -239,7 +239,7 @@ client_connect(State=#state{auth = Auth, params = Params, endpoint = Endpoint}) 
 
 
 
--spec client_shutdown(record()) -> ok.
+-spec client_shutdown(#state{}) -> ok.
 client_shutdown(State=#state{client_pid=undefined}) ->
     %% not started, nothing to do
     State;
@@ -257,5 +257,3 @@ client_reconnect(After, Status, State) ->
     lager:warning("Will reconnect stream, status = ~p", [Status]),
     erlang:send_after(After, self(), reconnect),
     State#state{client_pid=undefined, status=Status}.
-
-    
